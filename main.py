@@ -7,6 +7,16 @@ class Student:
         self.courses_in_progress = []
         self.grades = {}
 
+    def rate_lecturer(self, lecturer, course, grade):
+        if isinstance(lecturer, Lecturer) and course in lecturer.courses_attached and (
+                course in self.courses_in_progress or course in self.finished_courses):
+            if course in lecturer.grades:
+                lecturer.grades[course] += [grade]
+            else:
+                lecturer.grades[course] = [grade]
+        else:
+            return 'Ошибка'
+
 
 class Mentor:
     def __init__(self, name, surname):
@@ -14,8 +24,31 @@ class Mentor:
         self.surname = surname
         self.courses_attached = []
 
-    def rate_hw(self, student, course, grade):
-        if isinstance(student, Student) and course in self.courses_attached and course in student.courses_in_progress:
+    # def rate_hw(self, student, course, grade):
+    #     if isinstance(student, Student) and course in self.courses_attached and course in student.courses_in_progress:
+    #         if course in student.grades:
+    #             student.grades[course] += [grade]
+    #         else:
+    #             student.grades[course] = [grade]
+    #     else:
+    #         return 'Ошибка'
+
+
+class Lecturer(Mentor):
+
+    def __init__(self, name, surname):
+        super().__init__(name, surname)
+        self.courses_attached = []
+        self.grades = {}
+
+
+class Reviewer(Mentor):
+
+    def __init__(self, name, surname):
+        super().__init__(name, surname)
+
+    def rate_student(self, student, course, grade):
+        if isinstance(student, Student) and course in student.courses_in_progress:
             if course in student.grades:
                 student.grades[course] += [grade]
             else:
@@ -24,23 +57,35 @@ class Mentor:
             return 'Ошибка'
 
 
-class Lecturer(Mentor):
-    def __init__(self, name, surname, courses_attached):
-        super().__init__(name, surname, courses_attached)
+# Students
+paul = Student('Paul', 'Atreides', 'male')
+paul.courses_in_progress += ['Python']
+paul.finished_courses += ['English']
 
-class Reviewer(Mentor):
-    def __init__(self, name, surname, courses_attached):
-        super().__init__(name, surname, courses_attached)
+liu = Student('Liu', 'Kang', 'male')
+liu.courses_in_progress += ['English']
+liu.finished_courses += ['Kung-Fu']
+
+# Lecturer
+obi_wan = Lecturer('Obi-Wan', 'Obi-Wan')
+obi_wan.courses_attached += ['Python']
+
+hannibal = Lecturer('Hannibal', 'Lecter')
+obi_wan.courses_attached += ['English']
+
+# Reviewer
+minerva = Reviewer('Minerva', 'McGonagall')
+altiera = Reviewer('Altiera', 'Cunningham')
 
 
-best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.courses_in_progress += ['Python']
+# best_student = Student('Ruoy', 'Eman', 'your_gender')
+# best_student.courses_in_progress += ['Python']
+#
+# cool_mentor = Mentor('Some', 'Buddy')
+# cool_mentor.courses_attached += ['Python']
+#
+# cool_mentor.rate_hw(best_student, 'Python', 10)
+# cool_mentor.rate_hw(best_student, 'Python', 10)
+# cool_mentor.rate_hw(best_student, 'Python', 10)
 
-cool_mentor = Mentor('Some', 'Buddy')
-cool_mentor.courses_attached += ['Python']
-
-cool_mentor.rate_hw(best_student, 'Python', 10)
-cool_mentor.rate_hw(best_student, 'Python', 10)
-cool_mentor.rate_hw(best_student, 'Python', 10)
-
-print(best_student.grades)
+# print(best_student.grades)
