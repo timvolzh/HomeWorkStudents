@@ -24,7 +24,13 @@ class Mentor:
             return 'Ошибка'
 
 
+class Lecturer(Mentor):
+    def __init__(self, name, surname, courses_attached):
+        super().__init__(name, surname, courses_attached)
 
+class Reviewer(Mentor):
+    def __init__(self, name, surname, courses_attached):
+        super().__init__(name, surname, courses_attached)
 
 
 best_student = Student('Ruoy', 'Eman', 'your_gender')
